@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<body>
+    <head>
+        <meta charset="UTF-8"><title>prism.gg</title>
+        <link rel="stylesheet" href="style.css">
+
+        <!--google fonts-->
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+        <!--CDN Font Awesome-->
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    </head>
+
+    <h1 style="font-size: 30px; color: rgb(54, 54, 54); font-family:'Inter'; ">Prism.gg</h1>
+
+    <!-- Hero page card -->
+
+    <div class="card" id="heropage">
+        <h1>color</h1>
+        <span id="heroText">
+        <p>Humans can't reliably recall colors. This is a simple game to see how good (or bad) you are at it.</p>
+        <p>We'll show you five colors, then you'll try and recreate them.</p>
+        <br>
+        </span>
+        <button class="start" id="startbtn">Start</button>
+    </div>
+
+    <!-- Ready-Set-Go page card -->
+
+    <div class="card" id ="countdownpage">
+        <p class="onebyfive">1 / 5</p>
+        <h1 class="prepText" id="countdown-card" style="text-align: right;margin-right: 7%;">ready</h1>
+    </div>
+
+    <!-- See-your-color-for-600-ms page card -->
+
+    <div class="card" id="colortimer">
+        <p class="onebyfive">1 / 5</p>
+        <h1 class="prepText" id="timer">6<span style="color: rgb(255, 255, 255,.3);">00</span></h1>
+        <p class="caption">seconds to remember</p>
+        <p class="caption" style="margin-top:40% ; margin-left:80% ;color: rgb(255, 255, 255,0.4); font-size: 23px;">Prism.gg</p>
+    </div>
+
+    <!--Pick your color page card-->
+    <div class="card" id="custom-card">
+    <div class="slider-group">
+        <div class="slider-bounds">
+            <input type="range" id="hue" min="0" max="360" value="50" class="easy-slider hue-track">
+        </div>
+        <div class="slider-bounds">
+            <input type="range" id="sat" min="0" max="100" value="50" class="easy-slider sat-track">
+        </div>
+        <div class="slider-bounds">
+        <input type="range" id="bri" min="0" max="100" value="50" class="easy-slider bri-track">
+        </div>
+    </div>
+
+    <p class= "onebyfive" style="margin-left: 180px;">1 / 5</p>
+    <p class="caption" style="margin-top:-45px ; margin-left:80% ;color: rgb(255, 255, 255,0.4); font-size: 23px;">Prism.gg</p>
+    <p id="slider-parameter">HUE</p>
+    <button class="submit" id="savebtn" style="display: flex; margin-top: -90px;justify-content: center;"><i class="fa-solid fa-forward-step"></i></button>
+</div>
+
+    <!--Color result score and compare-->
+
+    <div class="card" id="result-card" style="padding: 0;">
+        <div id="chosen-color-card">
+        <p class= "onebyfive">1 / 5</p>
+        <h1 class="prepText" id="score" style="font-family:'Plus Jakarta Sans';margin-left: 56%;font-weight: 600;";">5.84</h1>
+        <div style="display: flex;justify-content: space-between;align-items: flex-end;width: 100%">
+        <div style="white-space: nowrap;margin-left: -9%;">
+        <p class="caption" style="color: rgb(255, 255, 255,.3);text-align: left">Your selection</p>
+        <p class="caption" id="chosen-color" style="text-align: left">H256 S33 B50</p>
+        </div>
+        <p id="heroText" style="display: inline-block; margin-left: 25%; margin-top:4px;max-width:290px;text-align:right;margin-right:8%;">Getting somewhere. Don't get excited – slowly.</p>
+        </div>
+    </div>
+        <p class="caption" style="margin-left:5%; color:rgb(255, 255, 255,.3); margin-top: 24%;">Original</p>
+        <p class="caption" id="shown-color" style="margin-left:5%">H0 S0 B0</p>
+        <button class="start" id="submit" style="margin-top: -100px;"><i class="fa-solid fa-forward-step"></i></button>
+    </div>
+
+    <!--Results and share page-->
+
+    <div class="card" id="finalpage">
+        <h1 id="final-score" style="font-size:70px;color:rgb(240, 240, 240,.8)"><span style="color: yellow;">00.00</span> / 50</h1>
+
+        <div style="display: flex;align-items: flex-end;justify-content: space-between;margin-left: 5%;margin-right: 5%;">
+            <div class="result-box" id="r1">
+                1.48
+            </div>
+            <div class="result-box" id="r2">
+                2.48
+            </div>
+            <div class="result-box" id="r3">
+                3.48
+            </div>
+            <div class="result-box" id="r4">
+                4.48
+            </div>
+            <div class="result-box" id="r5">
+                5.48
+            </div>
+        </div>
+
+        <span id="heroText" style="max-width: fit-content;margin-top: 35px;">
+        <p id="upper-text">Mmm almost 00 out of 50.</p>
+        <p id="lower-text" style="margin-top: -15px;font-family: 'Inter';font-weight: 400;color:white">Not too genius but hey – its the effort that counts.</p>
+        <br>
+        </span>
+
+        <div style="display: flex;">
+            <input id="name-input" placeholder="Your name here">
+            <button id="post-btn">Post score & challenge a friend</button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+
+</body>
