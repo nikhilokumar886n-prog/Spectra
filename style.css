@@ -1,41 +1,56 @@
-body{
+body {
     margin: 0;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
 }
 
-.hidden { display: none !important; }
+.hidden { 
+    display: none !important; 
+}
+
+.logo-title {
+    font-size: 30px;
+    color: rgb(54, 54, 54);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin-left: 45px;
+    margin-top: 25px;
+    margin-bottom: 0;
+}
 
 .card {
-    display:block;
+    display: block;
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
     background-color: black;
-    padding-top:6px;
-    margin-top: 50px;
+    padding-top: 6px;
+    margin-top: 40px;
     padding-right: 20px;
-    padding-left:15px;
+    padding-left: 15px;
     align-items: center;
     margin-left: auto;
     margin-right: auto;
     width: 700px;
     height: 550px;
     border-style: none;
-    border-radius: 35px;
-    box-shadow: 0px 0px 20px 2px rgb(116, 116, 116);
+    border-radius: 32px;
+    box-shadow: 0px 0px 22px 2px rgb(116, 116, 116);
     margin-bottom: 70px;
 }
 
-.prepText{
+.prepText {
     margin-left: 48%;
     font-size: 120px;
     margin-top: -60px;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 h1 {
     display: block;
-    margin-top: 20px;
-    color:white;        
-    font-family: "Plus Jakarta Sans", sans-serif;
+    color: #ffffff;        
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 130px;
     font-weight: 550;
     margin-top: 35px;
@@ -43,18 +58,19 @@ h1 {
     margin-bottom: 0px;
 }
 
-#heroText {
+#intro-text {
     display: block;
     max-width: 60%;
     margin-left: 38px;
     margin-right: auto;
     font-weight: 550;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-size: 23px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px;
     color: rgb(178, 173, 173);
+    line-height: 1.4;
 }
 
-button{
+button {
     display: block;
     align-items: center;
     margin-left: auto;
@@ -64,138 +80,128 @@ button{
     width: 90px;
     height: 50px;
     font-size: 20px;
-    font-family: "Inter";
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     background-color: rgb(212, 212, 212);
+    transition: background-color 0.2s ease;
 }
 
-button:hover{
+button:hover {
     background-color: white;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-
-#timer{
+#timer {
     margin-left: 63%;
-    font-family: "Plus Jakarta Sans";
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
 }
 
-.caption{
-    color:white;
+.caption {
+    color: white;
     display: block;
     margin-left: 68%;
     margin-top: -10px;
-    font-family: "Inter";
+    font-family: 'Inter', sans-serif;
     font-size: 20px;
 }
 
-.submit {
-    display: block;
-    margin-top:50%;
-    margin-left: 85%;
-    border-style: none;
-    background-color: white;
-    width: 65px;
-    height: 65px;
-    padding: 15px;
-    border-radius: 100%;
-    box-shadow: 0px 0px 3px 1px rgb(0, 0, 0, .3);
+.card-watermark {
+    margin-top: 40%;
+    margin-left: 80%;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 23px;
 }
 
-#savebtn {
+.action-btn {
     display: flex;
-    margin-top: -90px;
+    align-items: center;
     justify-content: center;
-    margin-top:50%;
+    margin-top: 50%;
     margin-left: 85%;
     border-style: none;
     background-color: white;
     width: 65px;
     height: 65px;
     padding: 15px;
-    border-radius: 100%;
-    box-shadow: 0px 0px 3px 1px rgb(0, 0, 0, .3);
+    border-radius: 50%;
+    box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
 }
-
-#submit {
-    display: block;
-    margin-top:50%;
-    margin-left: 85%;
-    border-style: none;
-    background-color: white;
-    width: 65px;
-    height: 65px;
-    padding: 15px;
-    border-radius: 100%;
-    box-shadow: 0px 0px 3px 1px rgb(0, 0, 0, .3);
-}
-
 
 #chosen-color-card {
-    display:block; 
-    margin:0; 
-    background-color:rgb(71, 6, 71); 
-    border-radius: 35px 35px 0px 0px; 
+    display: block; 
+    margin: 0; 
+    background-color: rgb(71, 6, 71); 
+    border-radius: 32px 32px 0px 0px; 
     height: 275px; 
     padding-top: 6px;
 }
 
 .result-box {
     display: flex;
+    align-items: flex-start;
     font-size: 25px;
     margin-top: 30px;
-    padding-left: 5px;
-    font-family: "Plus Jakarta Sans";
+    padding-left: 6px;
+    padding-top: 6px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     color: white;
     font-weight: 500;
     width: 120px;
     height: 120px;
+    box-sizing: border-box;
 }
 
 #name-input {
     display: flex;
-    justify-content: space-between;
     width: 150px;
     margin-left: 5%;
     border-style: solid;
     color: white;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 36px;
+    padding-right: 36px;
+    height: 52px;
     text-align: left;
-    font-family: "Plus Jakarta Sans";
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: 20px;
     border-color: rgb(240, 240, 240);
     border-width: 2px;
     background-color: black;
     border-radius: 100px;
+    outline: none;
 }
 
-#post-btn{
+#post-btn {
     display: flex;
+    align-items: center;
     background-color: rgb(240, 240, 240);
-    justify-content: space-between;
+    justify-content: center;
     margin-right: 5%;
     width: fit-content;
-    padding: 30px;
+    padding: 0 30px;
+    height: 54px;
     border-style: none;
     border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
 }
 
-#post-btn:hover{
-    background-color: white ;
-
+#post-btn:hover {
+    background-color: white;
 }
 
-#custom-card {
-    display:block;
+#picker-card {
+    display: block;
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-    padding-top:6px;
-    margin-top: 50px;
+    padding-top: 6px;
+    margin-top: 40px;
     padding-right: 20px;
-    padding-left:15px;
+    padding-left: 15px;
     align-items: center;
     margin-left: auto;
     margin-right: auto;
@@ -203,22 +209,21 @@ button:hover{
     height: 550px;
     background-color: black;
     border-style: none;
-    border-radius: 35px;
-    box-shadow: 0px 0px 20px 2px rgb(116, 116, 116);
+    border-radius: 32px;
+    box-shadow: 0px 0px 22px 2px rgb(116, 116, 116);
     margin-bottom: 70px;
 }
 
 :root {
-  --h: 256;
-  --s: 33%;
-  --l: 50%; 
+    --h: 180;
+    --s: 50%;
+    --l: 50%; 
 }
 
 .hue-track {
     display: flex;
     width: 570px;
     border-style: none;
-    margin-right: 0;
     background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
 }
 
@@ -226,27 +231,26 @@ button:hover{
     border-style: none;
     display: flex;
     width: 570px;
-  background: linear-gradient(to right, hsl(var(--h), 0%, var(--l)), hsl(var(--h), 100%, var(--l)));
+    background: linear-gradient(to right, hsl(var(--h), 0%, var(--l)), hsl(var(--h), 100%, var(--l)));
 }
 
 .bri-track {
     display: flex;
     border-style: none;
-  background: linear-gradient(to right, hsl(var(--h), var(--s), 0%), hsl(var(--h), var(--s), 50%), hsl(var(--h), var(--s), 100%));
+    background: linear-gradient(to right, hsl(var(--h), var(--s), 0%), hsl(var(--h), var(--s), 50%), hsl(var(--h), var(--s), 100%));
 }
 
-.easy-slider {
+.color-slider {
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
     position: absolute;
-    
     width: 564px;
     height: 50px;
-    
     transform: rotate(-90deg);
     border-radius: 0px;
     outline: none;
+    cursor: pointer;
 }
 
 .slider-group {
@@ -268,40 +272,20 @@ button:hover{
 
 #slider-parameter {
     display: inline-block;
-    color: rgb(195,195,195); 
+    color: rgb(195, 195, 195); 
     margin-left: 180px;
     margin-top: 55%; 
-    font-family: 'Plus Jakarta Sans';
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 500;
     font-size: 17px;
     text-align: center;
 }
 
-.onebyfive {
-    color:rgb(195, 195, 195); 
+.round-counter {
+    color: rgb(195, 195, 195); 
     display: block; 
     margin-left: 30px; 
-    margin-top:50px; 
-    font-family: 'Plus Jakarta Sans'; 
+    margin-top: 50px; 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
     font-size: 20px;
-}
-
-#r1 {
-    background-image: linear-gradient(-45deg, hsl(255,100%,100%) 50%, #d6da6b 50%);
-}
-
-#r2 {
-    background-image: linear-gradient(-45deg, #d34edd 50%, #d6da6b 50%);
-}
-
-#r3 {
-    background-image: linear-gradient(-45deg, #d34edd 50%, #d6da6b 50%);
-}
-
-#r4 {
-    background-image: linear-gradient(-45deg, #d34edd 50%, #d6da6b 50%);
-}
-
-#r5 {
-    background-image: linear-gradient(-45deg, #d34edd 50%, #d6da6b 50%);
 }

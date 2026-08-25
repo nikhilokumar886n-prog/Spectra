@@ -1,346 +1,298 @@
-let gameData = [];
-
+// Game history and round trackers
+let gameHistory = [];
 let currentRound = 0;
-const maxRounds = 5;
+const totalRounds = 5;
 
-const heroPage = document.getElementById("heropage");
-const countdownPage = document.getElementById("countdownpage");
-const colortimerPage = document.getElementById("colortimer");
-const colorpickPage = document.getElementById("custom-card");
-const roundresultPage = document.getElementById("result-card");
-const finalPage = document.getElementById("finalpage");
+// Screen / Card DOM references
+const homeCard = document.getElementById("home-card");
+const countdownCard = document.getElementById("countdown-card");
+const memoryCard = document.getElementById("memory-card");
+const pickerCard = document.getElementById("picker-card");
+const resultCard = document.getElementById("result-card");
+const finalCard = document.getElementById("final-card");
 
-function hideAllScreens() {
-    heroPage.classList.add("hidden");
-    countdownPage.classList.add("hidden");
-    colortimerPage.classList.add("hidden");
-    colorpickPage.classList.add("hidden");
-    roundresultPage.classList.add("hidden");
-    finalPage.classList.add("hidden");
+function hideAllCards() {
+    homeCard.classList.add("hidden");
+    countdownCard.classList.add("hidden");
+    memoryCard.classList.add("hidden");
+    pickerCard.classList.add("hidden");
+    resultCard.classList.add("hidden");
+    finalCard.classList.add("hidden");
 }
 
-function switchToPage(pageEl) {
-    hideAllScreens();
-    pageEl.classList.remove("hidden");
+function showCard(cardElement) {
+    hideAllCards();
+    cardElement.classList.remove("hidden");
 }
 
-/////////////////////////////////////////////////////////////////////
-// Random Color Loader logic                                       //
-/////////////////////////////////////////////////////////////////////
+// Global target color for current round
+let targetColor = "hsl(0, 0%, 0%)";
 
-const startEl = document.querySelectorAll(".start");
+const startButtons = document.querySelectorAll(".start-btn");
+const allCards = document.querySelectorAll(".card");
+const countdownStatus = document.getElementById("countdown-status");
+const roundLabels = document.querySelectorAll(".round-counter");
 
-const cardEl = document.querySelectorAll(".card");
+// Display home screen on load
+showCard(homeCard);
 
-const countdownEl = document.getElementById("countdown-card");
+startButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
 
-const RoundNo = document.querySelectorAll(".onebyfive")
+        if (currentRound < totalRounds) {
+            showCard(countdownCard);
 
-let shownColor = "hsl(0,0%,0%)";
+            setTimeout(() => {
+                showRandomColor();
+            }, 3000);
 
-switchToPage(heroPage);
+            setTimeout(() => setCountdownText("set"), 1500);
+            setTimeout(() => setCountdownText("go"), 3000);
 
-startEl.forEach(btn=> {
-  
-  btn.addEventListener('click', () => {
+            setTimeout(() => {
+                setCountdownText("ready");
+                showCard(memoryCard);
+            }, 4000);
 
-    if (currentRound<maxRounds){
+            function setCountdownText(text) {
+                countdownStatus.innerHTML = text;
+            }
 
-      switchToPage(countdownPage);
-      setTimeout(()=>{
-        showRandomColor()},3000);
+            setTimeout(() => {
+                timerCount = 600;
+                clearInterval(timerInterval);
+                timerInterval = setInterval(runTimer, 10);
+            }, 3100);
 
-      setTimeout(()=>countStage("set"),1500);
-      setTimeout(()=>countStage("go"),3000);
+            currentRound++;
 
-      setTimeout(()=>{
-        countStage("ready");
-        switchToPage(colortimerPage);
-      },4000);
+            roundLabels.forEach(label => {
+                label.innerHTML = `${currentRound} / ${totalRounds}`;
+            });
 
+        } else {
+            // Render final results page
+            const r1 = document.getElementById("r1");
+            const r2 = document.getElementById("r2");
+            const r3 = document.getElementById("r3");
+            const r4 = document.getElementById("r4");
+            const r5 = document.getElementById("r5");
 
-      function countStage(text){
-        countdownEl.innerHTML = text;
-      }
+            const finalScoreEl = document.getElementById("final-score");
+            const upperText = document.getElementById("upper-text");
+            const lowerText = document.getElementById("lower-text");
 
-      setTimeout(()=>{
-        time = 600;
-        clearInterval(timerId);
-        timerId = setInterval(counter,10);
-      },3100);
+            r1.style.backgroundImage = `linear-gradient(-45deg, ${gameHistory[0].inputColor} 50%, ${gameHistory[0].outputColor} 50%)`;
+            r2.style.backgroundImage = `linear-gradient(-45deg, ${gameHistory[1].inputColor} 50%, ${gameHistory[1].outputColor} 50%)`;
+            r3.style.backgroundImage = `linear-gradient(-45deg, ${gameHistory[2].inputColor} 50%, ${gameHistory[2].outputColor} 50%)`;
+            r4.style.backgroundImage = `linear-gradient(-45deg, ${gameHistory[3].inputColor} 50%, ${gameHistory[3].outputColor} 50%)`;
+            r5.style.backgroundImage = `linear-gradient(-45deg, ${gameHistory[4].inputColor} 50%, ${gameHistory[4].outputColor} 50%)`;
 
-      currentRound++;
+            const totalScore = gameHistory.reduce((sum, item) => sum + item.roundScore, 0);
 
-      RoundNo.forEach(el=> {
-        el.innerHTML = `${currentRound} / 5`
-      });
+            finalScoreEl.innerHTML = `<span style="color: #ffeb3b;">${totalScore.toFixed(2)}</span> / 50`;
+            upperText.innerHTML = `Mmm almost ${Math.round(totalScore)} out of 50.`;
 
-    }
+            if (totalScore < 5) lowerText.innerHTML = "Were your eyes even open? That was rough.";
+            else if (totalScore < 10) lowerText.innerHTML = "Not too genius but hey – it's the effort that counts.";
+            else if (totalScore < 15) lowerText.innerHTML = "A little muddy, but you got a few hues right.";
+            else if (totalScore < 20) lowerText.innerHTML = "Not bad, but your color memory needs some work.";
+            else if (totalScore < 25) lowerText.innerHTML = "Almost average! You have a decent eye.";
+            else if (totalScore < 30) lowerText.innerHTML = "Solid middle ground. You're getting the hang of it.";
+            else if (totalScore < 35) lowerText.innerHTML = "Pretty good! Your color recall is above average.";
+            else if (totalScore < 40) lowerText.innerHTML = "Great job! You have a very sharp eye.";
+            else if (totalScore < 45) lowerText.innerHTML = "Incredible memory! You must work with colors.";
+            else if (totalScore < 48) lowerText.innerHTML = "Basically a human color picker! Super impressive.";
+            else lowerText.innerHTML = "Absolute perfection! Your color vision is flawless.";
 
-    else {
-
-      const roneEl = document.getElementById("r1");
-      const rtwoEl = document.getElementById("r2");
-      const rthreeEl = document.getElementById("r3");
-      const rfourEl = document.getElementById("r4");
-      const rfiveEl = document.getElementById("r5");
-
-      const finalScore = document.getElementById("final-score");
-      const upperText = document.getElementById("upper-text");
-
-      roneEl.style.backgroundImage = `linear-gradient(-45deg, ${gameData[0].inputColor} 50%, ${gameData[0].outputColor} 50%)`;
-
-      rtwoEl.style.backgroundImage = `linear-gradient(-45deg, ${gameData[1].inputColor} 50%, ${gameData[1].outputColor} 50%)`;
-
-      rthreeEl.style.backgroundImage = `linear-gradient(-45deg, ${gameData[2].inputColor} 50%, ${gameData[2].outputColor} 50%)`;
-
-      rfourEl.style.backgroundImage = `linear-gradient(-45deg, ${gameData[3].inputColor} 50%, ${gameData[3].outputColor} 50%)`;
-
-      rfiveEl.style.backgroundImage = `linear-gradient(-45deg, ${gameData[4].inputColor} 50%, ${gameData[4].outputColor} 50%)`;
-
-      const totalScore = gameData[0].roundScore + gameData[1].roundScore + gameData[2].roundScore + gameData[3].roundScore + gameData[4].roundScore;
-
-      finalScore.innerHTML = `${totalScore.toFixed(2)}</span> / 50`;
-
-      upperText.innerHTML = `Mmm almost ${Math.round(totalScore)} out of 50.`;
-
-      const lowerText = document.getElementById("lower-text");
-      if (totalScore < 5) lowerText.innerHTML = "Were your eyes even open? That was rough.";
-      else if (totalScore < 10) lowerText.innerHTML = "Not too genius but hey – its the effort that counts.";
-      else if (totalScore < 15) lowerText.innerHTML = "A little muddy, but you got a few hues right.";
-      else if (totalScore < 20) lowerText.innerHTML = "Not bad, but your color memory needs some work.";
-      else if (totalScore < 25) lowerText.innerHTML = "Almost average! You have a decent eye.";
-      else if (totalScore < 30) lowerText.innerHTML = "Solid middle ground. You're getting the hang of it.";
-      else if (totalScore < 35) lowerText.innerHTML = "Pretty good! Your color recall is above average.";
-      else if (totalScore < 40) lowerText.innerHTML = "Great job! You have a very sharp eye.";
-      else if (totalScore < 45) lowerText.innerHTML = "Incredible memory! You must work with colors.";
-      else if (totalScore < 48) lowerText.innerHTML = "Basically a human color picker! Super impressive.";
-      else lowerText.innerHTML = "Absolute perfection! Your color vision is flawless.";
-
-      switchToPage(finalPage);
-      
-    }
-
-  });
+            showCard(finalCard);
+        }
+    });
 });
 
 function showRandomColor() {
-    const tempHue = Math.floor(Math.random() * (360 - 0 + 1)) + 0;
-    const tempSat = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
-    const tempBri = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
+    const randomHue = Math.floor(Math.random() * 361);
+    const randomSat = Math.floor(Math.random() * 101);
+    const randomBri = Math.floor(Math.random() * 101);
 
-    shownColor = `hsl(${tempHue},${tempSat}%, ${tempBri}%)`;
+    targetColor = `hsl(${randomHue}, ${randomSat}%, ${randomBri}%)`;
 
-    cardEl.forEach(el=> {
-    el.style.backgroundColor = shownColor;
+    allCards.forEach(card => {
+        card.style.backgroundColor = targetColor;
     });
 
-    setTimeout(()=>cardEl.forEach(el=> {
-      el.style.backgroundColor = 'rgb(0,0,0)';
-      }),7000);
+    setTimeout(() => {
+        allCards.forEach(card => {
+            card.style.backgroundColor = '#111216';
+        });
+    }, 7000);
 }
 
 const timerEl = document.getElementById("timer");
-let time = 600;
-let timerId;
+let timerCount = 600;
+let timerInterval;
 
-function counter() {
-      if (time>0){
-          time = time - 1;
+function runTimer() {
+    if (timerCount > 0) {
+        timerCount--;
 
-          let decimals = time % 100;
-          let formattedDecimals = decimals < 10 ? "0" + decimals : decimals;
+        let decimals = timerCount % 100;
+        let formattedDecimals = decimals < 10 ? "0" + decimals : decimals;
 
-          timerEl.innerHTML = `${Math.floor(time/100)}<span style="color: rgb(255, 255, 255,.3);">${formattedDecimals}</span>`
-      }
-      else {
-        clearInterval(timerId);
-        switchToPage(colorpickPage);
-      }
+        timerEl.innerHTML = `${Math.floor(timerCount / 100)}<span style="color: rgba(255, 255, 255, 0.3);">${formattedDecimals}</span>`;
+    } else {
+        clearInterval(timerInterval);
+        showCard(pickerCard);
+    }
 }
 
+// -------------------------------------------------------------
+// Color Sliders and Live Preview
+// -------------------------------------------------------------
 
-/////////////////////////////////////////////////////////////////////
-//  Color Slider and Picker logic                                  //
-/////////////////////////////////////////////////////////////////////
-
-const root = document.documentElement;
-const hueSlider = document.getElementById('hue');
-const satSlider = document.getElementById('sat');
-const briSlider = document.getElementById('bri');
+const rootEl = document.documentElement;
+const hueInput = document.getElementById('hue');
+const satInput = document.getElementById('sat');
+const briInput = document.getElementById('bri');
 const sliderParameter = document.getElementById('slider-parameter');
 
-const customCard = document.getElementById("custom-card");
+const pickerCardEl = document.getElementById("picker-card");
 
-function updateColors(slider) {
-  let h = hueSlider.value;
-  let s = satSlider.value;
-  let b = briSlider.value;
-  
-  sliderParameter.innerHTML = slider;
+function updateColor(sliderName) {
+    let h = hueInput.value;
+    let s = satInput.value;
+    let b = briInput.value;
 
-  root.style.setProperty('--h', h);
-  root.style.setProperty('--s', `${s}%`);
-  root.style.setProperty('--l', `${b}%`); 
+    sliderParameter.innerHTML = sliderName;
 
-  customCard.style.backgroundColor = `hsl(${h},${s}%,${b}%)`;
+    rootEl.style.setProperty('--h', h);
+    rootEl.style.setProperty('--s', `${s}%`);
+    rootEl.style.setProperty('--l', `${b}%`);
+
+    pickerCardEl.style.backgroundColor = `hsl(${h}, ${s}%, ${b}%)`;
 }
 
-hueSlider.addEventListener('input', () => updateColors("HUE"));
-satSlider.addEventListener('input', () => updateColors("SATURATION"));
-briSlider.addEventListener('input', () => updateColors("BRIGHTNESS"));
+hueInput.addEventListener('input', () => updateColor("HUE"));
+satInput.addEventListener('input', () => updateColor("SATURATION"));
+briInput.addEventListener('input', () => updateColor("BRIGHTNESS"));
 
-saveEl = document.getElementById("savebtn");
-let chosenColor = "";
+const saveBtn = document.getElementById("save-btn");
+let selectedColor = "";
 
-/////////////////////////////////////////////////////////////////////
-// Color Score Calculation logic                                   //
-/////////////////////////////////////////////////////////////////////
+// -------------------------------------------------------------
+// Score and Redmean Accuracy Calculation
+// -------------------------------------------------------------
 
-const chosenColorEl = document.getElementById("chosen-color");
-const shownColorEl = document.getElementById("shown-color");
+const chosenColorText = document.getElementById("chosen-color");
+const shownColorText = document.getElementById("shown-color");
+const chosenColorCard = document.getElementById("chosen-color-card");
+const scoreText = document.getElementById("score");
+const feedbackText = document.getElementById("feedback-text");
 
-const chosenColorCardEl = document.getElementById("chosen-color-card");
-const resultCardEl = document.getElementById("result-card");
+saveBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    clearInterval(timerInterval);
 
-const scoreEl = document.getElementById("score");
-const roundMessageEl = document.querySelector("#result-card #heroText");
+    let h = hueInput.value;
+    let s = satInput.value;
+    let b = briInput.value;
 
-saveEl.addEventListener('click', function(e){
+    selectedColor = `hsl(${h}, ${s}%, ${b}%)`;
 
-  e.preventDefault();
-  clearInterval(timerId);
-
-  let h = hueSlider.value;
-  let s = satSlider.value;
-  let b = briSlider.value;
-
-  chosenColor = `hsl(${h}, ${s}%, ${b}%)`;
-
-  const chosenColorValues = chosenColor
-        .slice(4,-1)
+    const chosenColorValues = selectedColor
+        .slice(4, -1)
         .split(',')
-        .map(parseFloat)
+        .map(parseFloat);
 
-  const shownColorValues = shownColor
-          .slice(4,-1)
-          .split(',')
-          .map(parseFloat)
+    const shownColorValues = targetColor
+        .slice(4, -1)
+        .split(',')
+        .map(parseFloat);
 
-  const chosenColorRGB = hslToRgb(chosenColorValues);
-  const shownColorRGB = hslToRgb(shownColorValues);
+    const chosenRgb = hslToRgb(chosenColorValues);
+    const shownRgb = hslToRgb(shownColorValues);
 
-  getAccuracy(chosenColorRGB, shownColorRGB);
+    const calculatedScore = calculateAccuracy(chosenRgb, shownRgb);
 
-  chosenColorEl.innerHTML = `H${chosenColorValues[0]} S${chosenColorValues[1]} B${chosenColorValues[2]}`;
-  shownColorEl.innerHTML = `H${shownColorValues[0]} S${shownColorValues[1]} B${shownColorValues[2]}`;
+    chosenColorText.innerHTML = `H${chosenColorValues[0]} S${chosenColorValues[1]} B${chosenColorValues[2]}`;
+    shownColorText.innerHTML = `H${shownColorValues[0]} S${shownColorValues[1]} B${shownColorValues[2]}`;
 
-  chosenColorCardEl.style.backgroundColor = chosenColor;
-  resultCardEl.style.backgroundColor = shownColor;
+    chosenColorCard.style.backgroundColor = selectedColor;
+    resultCard.style.backgroundColor = targetColor;
 
-  gameData.push({
-          inputColor : shownColor,
-          outputColor : chosenColor,
-          roundScore : Number(scoreEl.innerHTML)
-        });
+    gameHistory.push({
+        inputColor: targetColor,
+        outputColor: selectedColor,
+        roundScore: calculatedScore
+    });
 
-  let currentScore = Number(scoreEl.innerHTML);
-  if (currentScore < 2) {
-    roundMessageEl.innerHTML = "Way off track! Are we seeing the same color?";
-  } else if (currentScore < 4) {
-    roundMessageEl.innerHTML = "A bit muddy. Try to focus on the exact hue.";
-  } else if (currentScore < 6) {
-    roundMessageEl.innerHTML = "Getting somewhere. Don't get excited – slowly.";
-  } else if (currentScore < 8) {
-    roundMessageEl.innerHTML = "Solid memory! You are getting close to it.";
-  } else if (currentScore < 9.5) {
-    roundMessageEl.innerHTML = "Very impressive! Almost an exact match now.";
-  } else {
-    roundMessageEl.innerHTML = "Perfect match! Your color vision is insane.";
-  }
+    if (calculatedScore < 2) {
+        feedbackText.innerHTML = "Way off track! Are we seeing the same color?";
+    } else if (calculatedScore < 4) {
+        feedbackText.innerHTML = "A bit muddy. Try to focus on the exact hue.";
+    } else if (calculatedScore < 6) {
+        feedbackText.innerHTML = "Getting somewhere. Don't get excited – slowly.";
+    } else if (calculatedScore < 8) {
+        feedbackText.innerHTML = "Solid memory! You are getting close to it.";
+    } else if (calculatedScore < 9.5) {
+        feedbackText.innerHTML = "Very impressive! Almost an exact match now.";
+    } else {
+        feedbackText.innerHTML = "Perfect match! Your color vision is insane.";
+    }
 
-  shownColor = "hsl(0,0%,0%)";
-  chosenColor = "hsl(0,0%,0%)";
+    targetColor = "hsl(0, 0%, 0%)";
+    selectedColor = "hsl(0, 0%, 0%)";
 
-  switchToPage(roundresultPage);
-
-})
+    showCard(resultCard);
+});
 
 function hslToRgb([h, s, l]) {
-    s /= 100; l /= 100;
+    s /= 100;
+    l /= 100;
     const k = n => (n + h / 30) % 12;
     const a = s * Math.min(l, 1 - l);
     const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
     return [255 * f(0), 255 * f(8), 255 * f(4)];
-  }
-
-
-function getAccuracy([r1,g1,b1],[r2,g2,b2]){
-
-  //EUCLIDEAN METHOD OF COLOR ACCURACY CALCULATION IS NOT WORKING THAT GOOD
-
-  // const distance = Math.sqrt(
-  //   Math.pow(r2 - r1, 2) +
-  //   Math.pow(g2 - g1, 2) +
-  //   Math.pow(b2 - b1, 2) 
-  // );
-
-  // const similarity = (Math.max(0,1 - (distance/441.67)))*10;  //441.67 is dist btw black n white
-
-  // const score = parseFloat(similarity.toFixed(2));
-
-  // scoreEl.innerHTML = score.toFixed(2);
-
-
-  //USING ANOTHER METHOD SOMETHING CALLED REDMEAN ALGORITHM THAT I FOUND ONLINE 
-
-  const rMean = (r1 + r2) / 2;
-
-  const r = r1 - r2;
-  const g = g1 - g2;
-  const b = b1 - b2;
-
-  // 2. Apply human perceptual weights
-  // Green gets a static heavy weight (4.0) because our eyes are most sensitive to it
-  const weightR = 2 + (rMean / 256);
-  const weightG = 4.0;
-  const weightB = 2 + ((255 - rMean) / 256);
-
-  // 3. Calculate the weighted perceptual distance
-  const distance = Math.sqrt((weightR * r * r) + (weightG * g * g) + (weightB * b * b));
-
-  // 4. Convert to a 0-1 score (765 is roughly the max distance in this model)
-  const similarity = Math.max(0, 1 - (distance / 765));
-
-  // 5. The Punishment Curve
-  // A gentler exponent (1.2 instead of 2) stops players from getting a 7/10 for a muddy guess 
-  // but doesn't over-punish accurate hues with imperfect lightness.
-  const score = Math.pow(similarity, 1.2) * 10;
-
-  scoreEl.innerHTML = score.toFixed(2);
-  return parseFloat(score.toFixed(2));
-
 }
 
+function calculateAccuracy([r1, g1, b1], [r2, g2, b2]) {
+    // Redmean Color Difference Algorithm (accounts for human eye sensitivity)
+    const rMean = (r1 + r2) / 2;
 
+    const r = r1 - r2;
+    const g = g1 - g2;
+    const b = b1 - b2;
 
-/////////////////////////////////////////////////////////////////////
-// Share progress and website link                                 //
-/////////////////////////////////////////////////////////////////////
+    // Perceptual sensitivity weights
+    const weightR = 2 + (rMean / 256);
+    const weightG = 4.0;
+    const weightB = 2 + ((255 - rMean) / 256);
 
+    const distance = Math.sqrt((weightR * r * r) + (weightG * g * g) + (weightB * b * b));
+
+    // Convert distance to similarity score out of 10
+    const similarity = Math.max(0, 1 - (distance / 765));
+    const score = Math.pow(similarity, 1.2) * 10;
+
+    scoreText.innerHTML = score.toFixed(2);
+    return parseFloat(score.toFixed(2));
+}
+
+// -------------------------------------------------------------
+// WhatsApp Score Share
+// -------------------------------------------------------------
 
 const postBtn = document.getElementById("post-btn");
 const nameInput = document.getElementById("name-input");
 
 postBtn.addEventListener('click', () => {
-
     let playerName = nameInput.value.trim() || "Someone";
     playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
-    const finalScoreText = document.getElementById("final-score").innerText; 
+    const finalScoreText = document.getElementById("final-score").innerText;
 
-    const rawMessage = `${playerName} scored ${finalScoreText} on Prism.gg!🤙\nCan you beat their color memory?\nGive it a try : https://prismgg.vercel.app/`;
-    const encodedMessage = encodeURIComponent(rawMessage);
+    const shareMsg = `${playerName} scored ${finalScoreText} on spectra!🤙\nCan you beat their color memory?\nGive it a try : https://spectra.vercel.app/`;
+    const encoded = encodeURIComponent(shareMsg);
 
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encoded}`;
     window.open(whatsappUrl, '_blank');
 });
